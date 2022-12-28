@@ -8,7 +8,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 export default function TableAll() {
-  let arr = JSON.parse(sessionStorage.getItem("arr"));
+  let storage = [];
+  if (sessionStorage.getItem("arr"))
+    storage = JSON.parse(sessionStorage.getItem("arr"));
 
   return (
     <TableContainer component={Paper}>
@@ -24,7 +26,7 @@ export default function TableAll() {
         </TableHead>
 
         <TableBody>
-          {arr.map((el) => (
+          {storage.map((el) => (
             <TableRow
               key={el.date}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

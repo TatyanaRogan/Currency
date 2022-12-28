@@ -6,14 +6,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function Modal({ el, price }) {
-  const inputs = useSelector((store) => store.inputs);
-
-  const dispatch = useDispatch();
-
   const [open, setOpen] = useState(true);
+  const [volume, setVolume] = useState();
 
   const str = new Date().toISOString();
 
@@ -22,21 +18,20 @@ export default function Modal({ el, price }) {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    dispatch({
-      type: "ADD_ARR",
-      payload: {
-        volume: inputs.volume,
-        type: el.type,
-        price: price,
-        side: el.side,
-        date: date,
-      },
-    });
+    let storage = [];
+    if (sessionStorage.getItem("arr"))
+      storage = JSON.parse(sessionStorage.getItem("arr"));
+
+    const newOrder = {
+      volume: volume,
+      type: el.type,
+      price: price,
+      side: el.side,
+      date: date,
+    };
+    storage.push(newOrder);
+    sessionStorage.setItem("arr", JSON.stringify(storage));
   };
-
-  let arr = useSelector((store) => store.arr);
-
-  sessionStorage.setItem("arr", JSON.stringify(arr));
 
   const handleClose = () => {
     setOpen(false);
@@ -65,19 +60,13 @@ export default function Modal({ el, price }) {
 
               <TextField
                 margin="dense"
+                value={volume}
                 fullWidth
                 label="Volume"
-                type="text"
+                type="number"
                 size="small"
                 name="volume"
-                onChange={(e) =>
-                  dispatch({
-                    type: "INPUTS_TYPING",
-                    payload: {
-                      [e.target.name]: e.target.value,
-                    },
-                  })
-                }
+                onChange={(event) => setVolume(event.target.value)}
               />
             </DialogContentText>
           </DialogContent>

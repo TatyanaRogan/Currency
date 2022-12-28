@@ -1,4 +1,4 @@
 Для запуска:
 
-npm install
+npm install, 
 npm start
