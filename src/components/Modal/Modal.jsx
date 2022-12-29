@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 
-export default function Modal({ open, el, price, handleClose }) {
+export default function Modal({ open, el, handleClose }) {
   const [volume, setVolume] = useState();
 
   const str = new Date().toISOString();
@@ -25,7 +25,7 @@ export default function Modal({ open, el, price, handleClose }) {
     const newOrder = {
       volume: volume,
       type: el.type,
-      price: price,
+      price: el.price,
       side: el.side,
       date: date,
     };
@@ -43,9 +43,16 @@ export default function Modal({ open, el, price, handleClose }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" style={{ color: "grey" }}>
-          Make order
-        </DialogTitle>
+        <div className="title">
+          <div>
+            <DialogTitle id="alert-dialog-title" style={{ color: "grey" }}>
+              Make order
+            </DialogTitle>
+          </div>
+
+          <div onClick={handleClose} className="cl-btn-7"></div>
+        </div>
+
         <form>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -53,7 +60,7 @@ export default function Modal({ open, el, price, handleClose }) {
                 <div style={{ color: el.side === "BUY" ? "green" : "red" }}>
                   {el.side}
                 </div>
-                {price}&nbsp;{el.type}
+                {el.price}&nbsp;{el.type}
               </div>
 
               <TextField

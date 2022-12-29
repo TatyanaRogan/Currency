@@ -80,7 +80,7 @@ export default function ListOfCurrency({ selected }) {
       <Container maxWidth="md">
         <div className="items">
           {searchedValute.map((el) => (
-            <Item el={el} key={el.id} price={el.price} />
+            <Item el={el} key={el.id} />
           ))}
         </div>
       </Container>

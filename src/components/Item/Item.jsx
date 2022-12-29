@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "../Modal/Modal";
 import "../../App.css";
 
-export default function Item({ el, price }) {
+export default function Item({ el }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -19,17 +19,11 @@ export default function Item({ el, price }) {
         <strong>
           {el.side}
           <br />
-          <div onClick={handleClickOpen}>{price}</div>
+          <div onClick={handleClickOpen}>{el.price}</div>
         </strong>
       </div>
       {open === true ? (
-        <Modal
-          el={el}
-          key={el.id}
-          price={price}
-          open={open}
-          handleClose={handleClose}
-        />
+        <Modal el={el} key={el.id} open={open} handleClose={handleClose} />
       ) : null}
     </div>
   );
