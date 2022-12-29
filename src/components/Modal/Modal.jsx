@@ -7,8 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 
-export default function Modal({ el, price }) {
-  const [open, setOpen] = useState(true);
+export default function Modal({ open, el, price, handleClose }) {
   const [volume, setVolume] = useState();
 
   const str = new Date().toISOString();
@@ -17,6 +16,7 @@ export default function Modal({ el, price }) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    handleClose();
 
     let storage = [];
     if (sessionStorage.getItem("arr"))
@@ -29,12 +29,10 @@ export default function Modal({ el, price }) {
       side: el.side,
       date: date,
     };
-    storage.push(newOrder);
-    sessionStorage.setItem("arr", JSON.stringify(storage));
-  };
 
-  const handleClose = () => {
-    setOpen(false);
+    storage.push(newOrder);
+
+    sessionStorage.setItem("arr", JSON.stringify(storage));
   };
 
   return (
@@ -48,7 +46,7 @@ export default function Modal({ el, price }) {
         <DialogTitle id="alert-dialog-title" style={{ color: "grey" }}>
           Make order
         </DialogTitle>
-        <form onSubmit={submitHandler}>
+        <form>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <div>
@@ -76,7 +74,7 @@ export default function Modal({ el, price }) {
               Cancel
             </Button>
             <Button
-              onClick={handleClose}
+              onClick={submitHandler}
               color="primary"
               autoFocus
               type="submit"

@@ -3,7 +3,7 @@ import { Container } from "@mui/material";
 import Item from "../Item/Item";
 import "../../App.css";
 
-function ListOfCurrency({ selected }) {
+export default function ListOfCurrency({ selected }) {
   const [usdBuy, setUsdBuy] = useState(
     (Math.random() * (70 - 68 + 1) + 68).toFixed(4)
   );
@@ -88,4 +88,4 @@ function ListOfCurrency({ selected }) {
   );
 }
 
-export default ListOfCurrency;
+

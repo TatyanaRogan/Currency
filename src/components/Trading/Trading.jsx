@@ -24,14 +24,8 @@ export default function Trading() {
           </select>
         </div>
 
-        {selected !== "Валюта" ? (
-          <ListOfCurrency selected={selected} />
-        ) : (
-          <div></div>
-        )}
+        {selected !== "Валюта" ? <ListOfCurrency selected={selected} /> : null}
       </Container>
     </div>
   );
 }
-
-
