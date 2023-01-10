@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 
 export default function Modal({ open, el, handleClose }) {
-  const [volume, setVolume] = useState();
+  const [volume, setVolume] = useState("");
+  const [formValid, setFormValid] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (volume !== "" && +volume > 0) {
+      setFormValid(true);
+      setError("Volume is correct");
+    } else {
+      setFormValid(false);
+      setError("Volume must be greater than 0");
+    }
+  }, [volume]);
 
   const str = new Date().toISOString();
 
@@ -16,6 +27,7 @@ export default function Modal({ open, el, handleClose }) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     handleClose();
 
     let storage = [];
@@ -31,7 +43,6 @@ export default function Modal({ open, el, handleClose }) {
     };
 
     storage.push(newOrder);
-
     sessionStorage.setItem("arr", JSON.stringify(storage));
   };
 
@@ -52,28 +63,32 @@ export default function Modal({ open, el, handleClose }) {
 
           <div onClick={handleClose} className="cl-btn-7"></div>
         </div>
+        <hr style={{ margin: "0px 0" }} />
 
         <form>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              <div>
-                <div style={{ color: el.side === "BUY" ? "green" : "red" }}>
-                  {el.side}
-                </div>
+            <div className="body">
+              <div style={{ color: el.side === "BUY" ? "green" : "red" }}>
+                {el.side}
+              </div>
+              <div style={{ color: "grey" }}>
                 {el.price}&nbsp;{el.type}
               </div>
+            </div>
 
-              <TextField
-                margin="dense"
-                value={volume}
-                fullWidth
-                label="Volume"
-                type="number"
-                size="small"
-                name="volume"
-                onChange={(event) => setVolume(event.target.value)}
-              />
-            </DialogContentText>
+            <TextField
+              required
+              id="filled-required"
+              margin="dense"
+              value={volume}
+              fullWidth
+              label="Volume"
+              type="number"
+              size="small"
+              name="volume"
+              onChange={(event) => setVolume(event.target.value)}
+            />
+            <div style={{ color: "red" }}>{error}</div>
           </DialogContent>
 
           <DialogActions>
@@ -81,10 +96,9 @@ export default function Modal({ open, el, handleClose }) {
               Cancel
             </Button>
             <Button
+              disabled={!formValid}
               onClick={submitHandler}
               color="primary"
-              autoFocus
-              type="submit"
             >
               OK
             </Button>
